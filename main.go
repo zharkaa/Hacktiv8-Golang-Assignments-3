@@ -23,7 +23,7 @@ func main() {
 
 		weather := Weather{Water: randomValueForWater, Wind: randomValueForWind}
 
-		marsharledWeather, _ := json.Marshal(weather)
+		marsharledWeather, _ := json.MarshalIndent(weather, "", " ")
 
 		cnvtWeather := string(marsharledWeather)
 
