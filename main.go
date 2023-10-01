@@ -8,44 +8,49 @@ import (
 )
 
 type Weather struct {
-	Wind  int
-	Water int
+	Water int `json:"Water"`
+	Wind  int `json:"Wind"`
+}
+
+func (w *Weather) checkWeatherStatus() {
+	if w.Water <= 5 {
+		fmt.Println("Status Water: Aman")
+	} else if w.Water >= 6 && w.Water <= 8 {
+		fmt.Println("Status Water: Siaga")
+	} else if w.Water > 8 {
+		fmt.Println("Status Water: Bahaya")
+	}
+
+	if w.Wind <= 6 {
+		fmt.Println("Status Wind: Aman")
+	} else if w.Wind >= 7 && w.Wind <= 15 {
+		fmt.Println("Status Wind: Siaga")
+	} else if w.Wind > 15 {
+		fmt.Println("Status Wind: Bahaya")
+	}
+}
+
+func cnvtWeather(w *Weather) {
+	res, _ := json.MarshalIndent(w, "", " ")
+	fmt.Println(string(res))
 }
 
 func main() {
-	rand.Seed(time.Now().Unix())
+	weather := Weather{}
+
+	// rand.Seed(time.Now().Unix())
+	rand.New(rand.NewSource(time.Now().Unix()))
 
 	for {
 		time.Sleep(2 * time.Second)
 
-		randomValueForWater := rand.Intn(100)
-		randomValueForWind := rand.Intn(100)
+		weather.Water = 8
+		weather.Wind = 15
 
-		weather := Weather{Water: randomValueForWater, Wind: randomValueForWind}
-
-		marsharledWeather, _ := json.MarshalIndent(weather, "", " ")
-
-		cnvtWeather := string(marsharledWeather)
-
+		fmt.Println(weather)
 		fmt.Print("\n")
-		fmt.Println(cnvtWeather)
-		// fmt.Println("Water:", weather.Water, "Wind:", weather.Wind)
-
-		if weather.Water <= 5 {
-			fmt.Println("Status Water: Aman")
-		} else if weather.Water >= 6 && weather.Water <= 8 {
-			fmt.Println("Status Water: Siaga")
-		} else if weather.Water > 8 {
-			fmt.Println("Status Water: Bahaya")
-		}
-
-		if weather.Wind <= 6 {
-			fmt.Println("Status Wind: Aman")
-		} else if weather.Wind >= 7 && weather.Wind <= 15 {
-			fmt.Println("Status Wind: Siaga")
-		} else if weather.Wind > 15 {
-			fmt.Println("Status Wind: Bahaya")
-		}
+		cnvtWeather(&weather)
+		weather.checkWeatherStatus()
 
 	}
 
